@@ -20,6 +20,9 @@ namespace Sandbox {
       return input;
     }
 
+    public static void Di<TInput>(this TInput input, string id = "") =>
+      input.D(id);
+
     private static readonly DumpOptions DumpOptions = new DumpOptions {
       DumpStyle = DumpStyle.CSharp,
       LineBreakChar = "\r\n",
@@ -30,6 +33,9 @@ namespace Sandbox {
       Console.WriteLine(ObjectDumper.Dump(input, DumpOptions));
       return input;
     }
+
+    public static string InC<TInput>(this TInput input) =>
+      ObjectDumper.Dump(input, DumpOptions);
 
     public static TInput FDump<TInput>(this TInput input) {
       var s = ObjectDumper.Dump(input, DumpOptions);
