@@ -1,8 +1,17 @@
 ﻿namespace MyTypes
 
 [<CLIMutable>]
-type Person = {
-    FirstName : string
-    LastName: string
-    Age: int
+type Parameters = {
+    item : string
+}
+
+[<CLIMutable>]
+type QueryResult = {
+    action : string
+    parameters : Parameters
+}
+
+[<CLIMutable>]
+type Root = {
+    queryResult : QueryResult
 }

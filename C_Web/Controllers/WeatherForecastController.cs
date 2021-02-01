@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MyTypes;
+using System.IO;
+using System.Text;
 
 namespace C_Web.Controllers {
   [ApiController]
@@ -32,9 +34,33 @@ namespace C_Web.Controllers {
     }
 
     [HttpPost]
-    public Person Index(Person person) {
-      return person;
+    public string Index(Root item) {
+      var sb = new StringBuilder();
+      sb.Append(@"{
+  ""fulfillmentMessages"": [
+    {
+        ""text"": {
+          ""text"": [
+            ""We received action \""");
+      sb.Append(item.queryResult.action);
+      sb.Append("\\\" and parameters ");
+      sb.Append(item.queryResult.parameters.item);
+      sb.Append(@"""
+        ]
+      }
+    }
+  ]
+}");
+      var asdf = sb.ToString();
+      return asdf;
+      //using (var reader = new StreamReader(Request.Body)) {
+      //  var body = reader.ReadToEnd();
+      //  System.Diagnostics.Debugger.Break();
+      //  var ss = 5;
+      //  // Do something
+      //}
     }
 
   }
+
 }

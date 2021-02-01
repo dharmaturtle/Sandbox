@@ -1,7 +1,10 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
+using Microsoft.Azure.Cosmos.Table;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -27,10 +30,21 @@ namespace C_Web {
       services.AddSwaggerGen(c => {
         c.SwaggerDoc("v1", new OpenApiInfo { Title = "C_Web", Version = "v1" });
       });
+      services.Configure<KestrelServerOptions>(options =>
+      {
+        options.AllowSynchronousIO = true;
+      });
+
+      services.Configure<IISServerOptions>(options =>
+      {
+        options.AllowSynchronousIO = true;
+      });
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env) {
+      var account = CloudStorageAccount.Parse("UseDevelopmentStorage=true;");
+      var client = account.CreateCloudTableClient();
       if (env.IsDevelopment()) {
         app.UseDeveloperExceptionPage();
         app.UseSwagger();
@@ -38,7 +52,10 @@ namespace C_Web {
       }
 
       app.UseHttpsRedirection();
-
+      app.Use((context, next) => {
+        context.Request.EnableBuffering();
+        return next();
+      });
       app.UseRouting();
 
       app.UseAuthorization();
