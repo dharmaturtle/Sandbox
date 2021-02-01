@@ -4,15 +4,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MyTypes;
 
 namespace C_Web.Controllers {
   [ApiController]
   [Route("[controller]")]
   public class WeatherForecastController : ControllerBase {
-    private static readonly string[] Summaries = new[]
-    {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
+    private static readonly string[] Summaries = new[] {
+      "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
+    };
 
     private readonly ILogger<WeatherForecastController> _logger;
 
@@ -29,6 +29,11 @@ namespace C_Web.Controllers {
         Summary = Summaries[rng.Next(Summaries.Length)]
       })
       .ToArray();
+    }
+
+    [HttpPost]
+    public Person Index(Person person) {
+      return person;
     }
 
   }
